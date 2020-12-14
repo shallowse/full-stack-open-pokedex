@@ -47,28 +47,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: 'patch'
-      - name: Success indication
-        uses: 8398a7/action-slack@v3 # https://github.com/marketplace/actions/action-slack
+      - name: Success indication # https://action-slack.netlify.app/usecase/02-custom
         if: ${{ success() }}
-        with:
-          status: ${{ job.status }}
-          fields: repo,message,commit,author,job,took,eventName,ref,workflow
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-      - name: Failure indication # https://action-slack.netlify.app/usecase/02-custom
-        if: ${{ failure() }}
         uses: 8398a7/action-slack@v3
         with:
           status: custom
           fields: workflow,job,commit,repo,ref,author,took
           custom_payload: |
             {
-              icon_emoji: ':octocat:',
               attachments: [{
-                color: 'danger',
+                color: 'good',
                 text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
               }]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
+      - name: Failure indication
+        uses: 8398a7/action-slack@v3 # https://github.com/marketplace/actions/action-slack
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,job,took,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+     
