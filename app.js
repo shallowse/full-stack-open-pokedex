@@ -12,8 +12,8 @@ app.get('/health', (_req, res) => {
 })
 
 app.get('/version', (_req, res) => {
-  res.send('11')
-});
+  res.send('12')
+})
 
 app.listen(PORT, () => {
   console.log('server started on port 5000')
