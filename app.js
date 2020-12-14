@@ -7,12 +7,12 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.static('dist'))
 
-app.get('/healthhh', (_req, res) => {
+app.get('/health', (_req, res) => {
   res.send('ok')
 })
 
 app.get('/version', (_req, res) => {
-  res.send('14')
+  res.send('15')
 })
 
 app.listen(PORT, () => {
